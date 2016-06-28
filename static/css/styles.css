@@ -1,0 +1,13 @@
+@import 'https://fonts.googleapis.com/css?family=Lato';
+body {
+  background-color: #1f1f37;
+  color: white;
+  font-family: 'Lato', sans-serif; }
+
+.btn {
+  border: solid 1px white;
+  background-color: #0e101f; }
+
+.btn:hover {
+  border: solid 1px #0e101f;
+  background-color: #0e101f; }

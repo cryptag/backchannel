@@ -26,9 +26,13 @@
     "electron-packager": "^7.0.4",
     "electron-prebuilt": "^1.2.0",
     "enzyme": "^2.3.0",
+    "gulp": "^3.9.1",
+    "gulp-inject": "^4.1.0",
+    "gulp-sass": "^2.3.2",
     "react-addons-test-utils": "^15.1.0",
     "spectron": "^3.2.3",
-    "webdriverio": "^4.1.1"
+    "webdriverio": "^4.1.1",
+    "wiredep": "^4.0.0"
   },
   "dependencies": {
     "mocha": "^2.5.3",
