@@ -3,6 +3,10 @@ import ResultList from './components/ResultList';
 import SearchForm from './components/SearchForm';
 import SaveTaskForm from './components/SaveTaskForm';
 
+import Nav from './components/layout/Nav';
+import BackChannelsList from './components/layout/BackChannelsList';
+import ChannelSummary from './components/layout/ChannelSummary';
+
 const request = require('superagent');
 const utf8 = require('utf8');
 
@@ -201,24 +205,30 @@ export default class App extends Component {
 
   render(){
     return (
-      <div>
-        <div className="row">
-          <SaveTaskForm
+      <main>
+          <Nav />
+          <BackChannelsList />
+
+            <div className="content">
+              Content
+            </div>
+            <ChannelSummary/>
+
+          {/*<SaveTaskForm
             saveTask={this.saveTask}
             onChangeSaveTitle={this.onChangeSaveTitle}
             onChangeSaveDescription={this.onChangeSaveDescription}
             onChangeSaveAssignees={this.onChangeSaveAssignees}
             onChangeSaveTags={this.onChangeSaveTags}
-            saveTaskFormMessage={this.state.saveTaskFormMessage} />
+            saveTaskFormMessage={this.state.saveTaskFormMessage} />*/}
 
-          <SearchForm
+          {/*<SearchForm
             executeSearch={this.executeSearch}
             onChangeTagValue={this.onChangeTagValue}
-            flashMessage={this.state.flashMessage} />
-        </div>
+            flashMessage={this.state.flashMessage} />*/}
 
-        <ResultList results={this.state.results} />
-      </div>
+        {/*<ResultList results={this.state.results} />*/}
+      </main>
     );
   }
 }

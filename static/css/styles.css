@@ -1,13 +1,69 @@
 @import 'https://fonts.googleapis.com/css?family=Lato';
+html, body, ul {
+  padding: 0;
+  margin: 0; }
+
 body {
-  background-color: #1f1f37;
-  color: white;
-  font-family: 'Lato', sans-serif; }
+  color: #222;
+  font-family: 'Lato', sans-serif;
+  display: flex;
+  flex-direction: column; }
 
-.btn {
-  border: solid 1px white;
-  background-color: #0e101f; }
+main {
+  height: 100vh;
+  display: flex; }
 
-.btn:hover {
-  border: solid 1px #0e101f;
-  background-color: #0e101f; }
+.navigation,
+.channels,
+.content,
+.summary {
+  box-sizing: border-box;
+  display: flex; }
+
+.navigation {
+  flex: 0.5;
+  flex-direction: column; }
+
+.channels {
+  flex: 2.5;
+  background-color: #1e202f;
+  flex-direction: column; }
+  .channels ul li {
+    color: #978de3;
+    padding: 10px; }
+    .channels ul li ul.chat li {
+      color: white;
+      font-size: 16px; }
+    .channels ul li .name {
+      padding-left: 15px; }
+  .channels h2 {
+    color: #ccc;
+    font-size: 1.3em;
+    margin-left: 5px; }
+
+.content {
+  flex: 5 5; }
+
+.summary {
+  flex: 1.5 1.5 10%; }
+
+ul {
+  list-style: none; }
+
+.navigation {
+  background-color: #0f0f17;
+  color: #978de3;
+  position: relative; }
+  .navigation .logo {
+    position: absolute;
+    bottom: 300px;
+    right: 0;
+    transform: rotate(-90deg);
+    transform-origin: bottom right; }
+    .navigation .logo h1 {
+      color: #555;
+      text-transform: uppercase; }
+  .navigation .tab {
+    padding: 20px; }
+    .navigation .tab a {
+      color: #978de3; }
