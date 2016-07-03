@@ -6,6 +6,7 @@ import SaveTaskForm from './components/SaveTaskForm';
 import Nav from './components/layout/Nav';
 import BackChannelsList from './components/layout/BackChannelsList';
 import ChannelSummary from './components/layout/ChannelSummary';
+import ChatRoom from './components/layout/ChatRoom';
 
 const request = require('superagent');
 const utf8 = require('utf8');
@@ -210,7 +211,8 @@ export default class App extends Component {
           <BackChannelsList />
 
             <div className="content">
-              Content
+              {/*TODO: show ChatRoom if proper tab is selected*/}
+              <ChatRoom />
             </div>
             <ChannelSummary/>
 
