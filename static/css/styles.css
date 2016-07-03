@@ -47,13 +47,16 @@ main {
 .summary {
   flex: 1.5 1.5 10%; }
 
-.chatroom .chat-incoming {
-  text-align: left;
-  padding-left: 5%; }
-
-.chatroom .chat-outgoing {
-  text-align: right;
-  padding-right: 5%; }
+.chatroom {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; }
+  .chatroom .chat-incoming {
+    text-align: left;
+    padding-left: 5%; }
+  .chatroom .chat-outgoing {
+    text-align: right;
+    padding-right: 5%; }
 
 ul {
   list-style: none; }

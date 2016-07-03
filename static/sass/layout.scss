@@ -68,6 +68,10 @@ main {
 }
 
 .chatroom {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
   .chat-incoming {
     text-align: left;
     padding-left: 5%;
