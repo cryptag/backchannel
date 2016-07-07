@@ -4,8 +4,8 @@ class ChatRoom extends Component {
   render(){
     let myUsername = this.myUsername;
     return (
-      <div className="chatroom">
-        {messages.map(message => {
+     <div key={this.props.room.key} className="chatroom">
+        {(this.props.room.messages || []).map(message => {
           let fromMe = (message.from === myUsername);
           return (
             <div key={message.key} className={fromMe ? 'chat-outgoing' : 'chat-incoming'}>

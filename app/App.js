@@ -17,6 +17,8 @@ export default class App extends Component {
   constructor(props){
     super(props);
 
+    this.setAndPopulateChatRooms();
+
     this.state = {
       // Search
       searchValue: '',
@@ -87,6 +89,10 @@ export default class App extends Component {
     return '';
   }
 
+  tagByPrefixStripped(plaintags, prefix) {
+    return this.tagByPrefix(plaintags, prefix).slice(prefix.length);
+  }
+
   tagsByPrefixStripped(plaintags, prefix) {
     let stripped = [];
     for (let i = 0; i < plaintags.length; i++) {
@@ -122,26 +128,26 @@ export default class App extends Component {
   }
 
   reqPost(urlSuffix, data){
-    data = JSON.stringify(data);
-    return request
-      .post(urlSuffix)
-      .use(cryptagdPrefix)
-      .send(data)
-      .end( (err, res) => {
-        let respErr = '';
+    return new Promise((resolve, reject) => {
+      request
+        .post(urlSuffix)
+        .use(cryptagdPrefix)
+        .send(data)
+        .end((err, res) => {
+          if (err) {
+            if (typeof res === 'undefined') {
+              respErr = err.toString();
+            } else {
+              // cryptagd's error format: {"error": "..."}
+              respErr = res.body.error;
+            }
 
-        if (err) {
-          if (typeof res === 'undefined') {
-            respErr = err.toString();
-          } else {
-            respErr = res.body.error;
+            reject(respErr);
           }
 
-          return [respErr, null];
-        }
-
-        return ['', res];
-      })
+          resolve(res);
+        });
+    })
   }
 
   executeSearch(e){
@@ -155,16 +161,7 @@ export default class App extends Component {
     let that = this;
 
     this.reqPost('/rows/get', plaintags)
-    .then(resp => {
-      let [respErr, res] = resp;
-      if (respErr){
-        that.mergeState({
-          results: [],
-          flashMessage: respErr
-        });
-        return
-      }
-
+    .then(res => {
       results = res.body.map(row => {
         let task = that.parseJSON(row.unencrypted);
         return {
@@ -179,6 +176,11 @@ export default class App extends Component {
       that.setState({
         results: results,
         flashMessage: ''
+      });
+    }, (respErr) => {
+      that.mergeState({
+        results: [],
+        flashMessage: respErr
       });
     })
   }
@@ -216,16 +218,12 @@ export default class App extends Component {
     }
 
     this.reqPost('/row', row)
-    .then(resp => {
-      let [respErr, res] = resp;
-      if (respErr) {
-        this.mergeState({saveTaskFormMessage: respErr});
-        return
-      }
-
+    .then(res => {
       let tags = res.body.plaintags;
       saveTaskFormMessage = 'New task saved with these tags: ' + tags.join(', ');
       this.mergeState({saveTaskFormMessage: saveTaskFormMessage});
+    }, (respErr) => {
+      this.mergeState({saveTaskFormMessage: respErr});
     })
   }
 
@@ -233,15 +231,7 @@ export default class App extends Component {
     let that = this;
 
     return this.reqPost('/rows/list', ['type:chatroom'])
-      .then(resp => {
-        let [respErr, res] = resp;
-        if (respErr) {
-          that.mergeState({chatFlashMessage: respErr});
-          return
-        }
-
-        console.log("No error fetching list of chatrooms...");
-
+      .then(res => {
         let rooms = [];
 
         res.body.map(row => {
@@ -255,16 +245,14 @@ export default class App extends Component {
 
         that.state.chat.rooms = rooms;
 
-        // that.mergeState({chatFlashMessage: 'Rooms created'});
-        console.log('Rooms created successfully');
-      }, (reason) => {
-        console.log("Fetching chat rooms and pushing them to state.chat.rooms failed: " + reason);
+        that.mergeState({chatFlashMessage: 'Rooms created'});
+      }, (respErr) => {
+        console.log("Fetching chat rooms and pushing them to state.chat.rooms failed: " + respErr);
+        that.mergeState({chatFlashMessage: respErr});
       })
   }
 
   populateChatRooms(roomIDs = []){
-    console.log("In populateChatRooms()...");
-
     let that = this;
 
     // Only populate rooms the caller wants populated. If no rooms
@@ -279,14 +267,7 @@ export default class App extends Component {
       // Fetch messages and attach them to room
 
       return this.reqPost('/rows/get', plaintags)
-        .then(resp => {
-          let [respErr, res] = resp;
-          if (respErr) {
-            console.log(`Error fetching messages for room ${room.roomname}` +
-                        ` with key ${room.key}: ${respErr}`);
-            return
-          }
-
+        .then(res => {
           console.log('Processing ' + res.body.length + ' messages...');
 
           let messages = res.body.map(msgRow => {
@@ -302,8 +283,9 @@ export default class App extends Component {
 
           // Attach messages to existing room
           room.messages = messages.sort(that.sortRowByCreated);
-        }, (reason) => {
-          console.log("Error fetching message rows: " + reason);
+        }, (respErr) => {
+          console.log(`Error fetching messages for room ${room.roomname}` +
+                      ` with key ${room.key}: ${respErr}`);
         })
     })
   }
@@ -334,20 +316,14 @@ export default class App extends Component {
                   'type:chatmessage', 'app:backchannel']
     }
     this.reqPost('/rows', row)
-    .then(resp => {
-      let [respErr, res] = resp;
-      if (respErr) {
-        this.mergeState({chatFlashMessage: respErr})
-        return
-      }
-      this.mergeState({chatFlashMessage: 'Message sent'})
+    .then(res => {
+      this.mergeState({chatFlashMessage: 'Message sent'});
+    }, (respErr) => {
+      this.mergeState({chatFlashMessage: respErr})
     })
   }
 
   render(){
-    // this.setAndPopulateChatRooms();
-    this.setEmptyChatRooms();
-
     return (
       <main>
           <Nav />
@@ -362,7 +338,7 @@ export default class App extends Component {
                     <ChatRoom
                       room={room} />
                       myUsername={this.state.chat.myUsername}
-                      {/* Create different chatFlashMessage per room */}
+                      {/* TODO: Create different chatFlashMessage per room */}
                       chatFlashMessage={this.state.chatFlashMessage} />
                   </div>
                 )
