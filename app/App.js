@@ -134,6 +134,8 @@ export default class App extends Component {
         .use(cryptagdPrefix)
         .send(data)
         .end((err, res) => {
+          let respErr = '';
+
           if (err) {
             if (typeof res === 'undefined') {
               respErr = err.toString();
@@ -336,10 +338,11 @@ export default class App extends Component {
                 return (
                   <div key={room.key}>
                     <ChatRoom
-                      room={room} />
+                      room={room}
                       myUsername={this.state.chat.myUsername}
-                      {/* TODO: Create different chatFlashMessage per room */}
                       chatFlashMessage={this.state.chatFlashMessage} />
+                      {/* TODO: Create different chatFlashMessage per room */}
+
                   </div>
                 )
               })}
