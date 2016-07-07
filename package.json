@@ -4,7 +4,7 @@
   "description": "Task management app",
   "main": "main.js",
   "scripts": {
-    "start": "electron main.js",
+    "start": "node_modules/.bin/electron main.js",
     "build": "electron-packager ./ CrypTask --platform=darwin --arch=x64 --overwrite",
     "build-linux": "electron-packager ./ CrypTask --platform=linux --arch=x64 --overwrite",
     "test": "node_modules/.bin/mocha test/.setup.js test/**/*.test.js"
@@ -22,9 +22,9 @@
     "babel-preset-react": "^6.5.0",
     "babel-register": "^6.9.0",
     "chai": "^3.5.0",
-    "electron-chromedriver": "^1.2.0",
-    "electron-packager": "^7.0.4",
-    "electron-prebuilt": "^1.2.0",
+    "electron-chromedriver": "^1.2.1",
+    "electron-packager": "^7.2.0",
+    "electron-prebuilt": "^1.2.6",
     "enzyme": "^2.3.0",
     "gulp": "^3.9.1",
     "gulp-inject": "^4.1.0",
