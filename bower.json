@@ -19,14 +19,6 @@
     "test",
     "tests"
   ],
-  "resolutions": {
-    "jquery": "1.9.1 - 2"
-  },
-  "dependencies": {
-    "jquery": "^3.0.0",
-    "bootstrap": "^3.3.6",
-    "font-awesome": "^4.6.3"
-  },
   "overrides": {
     "bootstrap": {
       "main": [
@@ -36,11 +28,19 @@
       ]
     },
     "font-awesome": {
-        "main": [
-            "less/font-awesome.less",
-            "css/font-awesome.css",
-            "scss/font-awesome.scss"
-        ]
+      "main": [
+        "less/font-awesome.less",
+        "css/font-awesome.css",
+        "scss/font-awesome.scss"
+      ]
     }
+  },
+  "resolutions": {
+    "jquery": "1.9.1 - 2"
+  },
+  "dependencies": {
+    "jquery": "^3.0.0",
+    "bootstrap": "^3.3.6",
+    "font-awesome": "^4.6.3"
   }
 }

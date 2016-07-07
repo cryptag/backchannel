@@ -17,12 +17,17 @@
     <div id="root"></div>
   </body>
 
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
   <!-- bower:js -->
   <script src="static/lib/jquery/dist/jquery.js"></script>
   <script src="static/lib/bootstrap/dist/js/bootstrap.js"></script>
   <!-- endbower -->
   <!-- inject:js -->
   <!-- endinject -->
+
+  <!-- Insert this line after script imports -->
+  <script>if (window.module) module = window.module;</script>
 
   <script>
     // You can also require other files to run in this process
