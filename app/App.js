@@ -163,28 +163,28 @@ export default class App extends Component {
     let that = this;
 
     this.reqPost('/rows/get', plaintags)
-    .then(res => {
-      results = res.body.map(row => {
-        let task = that.parseJSON(row.unencrypted);
-        return {
-          key: that.tagByPrefix(row.plaintags, 'id:'),
-          title: task.Title,
-          description: task.Description,
-          assignees: that.tagsByPrefixStripped(row.plaintags, 'assignee:'),
-          tags: row.plaintags
-        };
-      });
+      .then(res => {
+        results = res.body.map(row => {
+          let task = that.parseJSON(row.unencrypted);
+          return {
+            key: that.tagByPrefix(row.plaintags, 'id:'),
+            title: task.Title,
+            description: task.Description,
+            assignees: that.tagsByPrefixStripped(row.plaintags, 'assignee:'),
+            tags: row.plaintags
+          };
+        });
 
-      that.setState({
-        results: results,
-        flashMessage: ''
-      });
-    }, (respErr) => {
-      that.mergeState({
-        results: [],
-        flashMessage: respErr
-      });
-    })
+        that.setState({
+          results: results,
+          flashMessage: ''
+        });
+      }, (respErr) => {
+        that.mergeState({
+          results: [],
+          flashMessage: respErr
+        });
+      })
   }
 
   saveTask(e){
@@ -220,13 +220,13 @@ export default class App extends Component {
     }
 
     this.reqPost('/row', row)
-    .then(res => {
-      let tags = res.body.plaintags;
-      saveTaskFormMessage = 'New task saved with these tags: ' + tags.join(', ');
-      this.mergeState({saveTaskFormMessage: saveTaskFormMessage});
-    }, (respErr) => {
-      this.mergeState({saveTaskFormMessage: respErr});
-    })
+      .then(res => {
+        let tags = res.body.plaintags;
+        saveTaskFormMessage = 'New task saved with these tags: ' + tags.join(', ');
+        this.mergeState({saveTaskFormMessage: saveTaskFormMessage});
+      }, (respErr) => {
+        this.mergeState({saveTaskFormMessage: respErr});
+      })
   }
 
   setEmptyChatRooms(){
@@ -268,7 +268,7 @@ export default class App extends Component {
 
       // Fetch messages and attach them to room
 
-      return this.reqPost('/rows/get', plaintags)
+      return that.reqPost('/rows/get', plaintags)
         .then(res => {
           console.log('Processing ' + res.body.length + ' messages...');
 
