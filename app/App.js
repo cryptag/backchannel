@@ -28,17 +28,27 @@ export default class App extends Component {
       description: '',
       assignees: '',
       tags: '',
-      saveTaskFormMessage: ''
+      saveTaskFormMessage: '',
+
+      // Chat
+      chatFlashMessage: '',
+      chat: {
+        myUsername: 'steve',
+        roomList: [],
+        rooms: []
+      }
     };
 
-    this.onChangeTagValue = this.onChangeTagValue.bind(this);
+    this.onChange = this.onChange.bind(this);
+
+    // Search form
     this.executeSearch = this.executeSearch.bind(this);
 
-    this.onChangeSaveTitle = this.onChangeSaveTitle.bind(this);
-    this.onChangeSaveDescription = this.onChangeSaveDescription.bind(this);
-    this.onChangeSaveAssignees = this.onChangeSaveAssignees.bind(this);
-    this.onChangeSaveTags = this.onChangeSaveTags.bind(this);
+    // Save form
     this.saveTask = this.saveTask.bind(this);
+
+    // ChatRoom
+    this.sendMessage = this.sendMessage.bind(this);
   }
 
   mergeState(obj){
@@ -47,34 +57,25 @@ export default class App extends Component {
     )
   }
 
-  onChangeTagValue(e){
-    this.mergeState({
-      searchValue: e.target.value
-    });
-  }
+  onChange(e){
+    var that = this;
 
-  onChangeSaveTitle(e){
-    this.mergeState({
-      title: e.target.value
-    });
-  }
+    // This indirection is required because the forms call
+    // `this.onChange().change.bind(this, 'some-form-field-name')` as
+    // to pass in the first argument to the `change` function below.
+    //
+    // If forms simply call `this.onChange.bind(this, 'some-form-field-name')`
+    // then we can't call `this.mergeState(...)` below, because `this`
+    // would then refer to the form thanks to the form's calling of
+    // the `bind` method.
 
-  onChangeSaveDescription(e){
-    this.mergeState({
-      description: e.target.value
-    });
-  }
-
-  onChangeSaveAssignees(e){
-    this.mergeState({
-      assignees: e.target.value
-    });
-  }
-
-  onChangeSaveTags(e){
-    this.mergeState({
-      tags: e.target.value
-    });
+    return {
+      change: (field, e) => {
+        var update = {};
+        update[field] = e.target.value
+        that.mergeState(update)
+      }
+    }
   }
 
   tagByPrefix(plaintags, prefix) {
@@ -97,9 +98,50 @@ export default class App extends Component {
     return stripped;
   }
 
+  sortRowByCreated(row, nextRow){
+    let rowTags = row.tags || row.plaintags;
+    let rowDate = that.tagByPrefixStripped(rowTags, 'created:');
+
+    let nextRowTags = nextRow.tags || nextRow.plaintags;
+    let nextRowDate = that.tagByPrefixStripped(nextRowTags, 'created:');
+
+    return rowDate - nextRowDate;
+  }
+
+  parseJSON(str){
+    return JSON.parse(utf8.decode(atob(str)));
+  }
+
+  encodeObjForPost(obj){
+    return btoa(utf8.encode(JSON.stringify(obj)));
+  }
+
   cleanedFields(s){
     let fields = s.trim().replace(',', ' ').split(/\s+/g);
     return fields.filter(f => f !== '');
+  }
+
+  reqPost(urlSuffix, data){
+    data = JSON.stringify(data);
+    return request
+      .post(urlSuffix)
+      .use(cryptagdPrefix)
+      .send(data)
+      .end( (err, res) => {
+        let respErr = '';
+
+        if (err) {
+          if (typeof res === 'undefined') {
+            respErr = err.toString();
+          } else {
+            respErr = res.body.error;
+          }
+
+          return [respErr, null];
+        }
+
+        return ['', res];
+      })
   }
 
   executeSearch(e){
@@ -110,38 +152,35 @@ export default class App extends Component {
     // Only fetch Tasks (not text, files, nor anything else)
     plaintags.push('type:task');
 
-    request
-      .post('/rows/get')
-      .use(cryptagdPrefix)
-      .send(plaintags)
-      .end( (err, res) => {
-        let results = [];
-        let flashMessage = '';
+    let that = this;
 
-        if (err) {
-          if (typeof res === 'undefined') {
-            flashMessage = err.toString();
-          } else {
-            flashMessage = res.body.error;
-          }
-        } else {
-          results = res.body.map((result) => {
-            let task = JSON.parse(utf8.decode(atob(result.unencrypted)));
-            return {
-              key: this.tagByPrefix(result.plaintags, "id:"),
-              title: task.Title,
-              description: task.Description,
-              assignees: this.tagsByPrefixStripped(result.plaintags, "assignee:"),
-              tags: result.plaintags
-            };
-          });
-        }
-
-        this.setState({
-          results: results,
-          flashMessage: flashMessage
+    this.reqPost('/rows/get', plaintags)
+    .then(resp => {
+      let [respErr, res] = resp;
+      if (respErr){
+        that.mergeState({
+          results: [],
+          flashMessage: respErr
         });
+        return
+      }
+
+      results = res.body.map(row => {
+        let task = that.parseJSON(row.unencrypted);
+        return {
+          key: that.tagByPrefix(row.plaintags, 'id:'),
+          title: task.Title,
+          description: task.Description,
+          assignees: that.tagsByPrefixStripped(row.plaintags, 'assignee:'),
+          tags: row.plaintags
+        };
       });
+
+      that.setState({
+        results: results,
+        flashMessage: ''
+      });
+    })
   }
 
   saveTask(e){
@@ -172,48 +211,164 @@ export default class App extends Component {
     }
 
     let row = {
-      unencrypted: btoa(utf8.encode(JSON.stringify(task))),
+      unencrypted: this.encodeObjForPost(task),
       plaintags: plaintags
     }
 
-    request
-      .post('/rows')
-      .use(cryptagdPrefix)
-      .send(row)
-      .end( (err, res) => {
-        let saveTaskFormMessage = '';
+    this.reqPost('/row', row)
+    .then(resp => {
+      let [respErr, res] = resp;
+      if (respErr) {
+        this.mergeState({saveTaskFormMessage: respErr});
+        return
+      }
 
-        if (err) {
-          if (typeof res === 'undefined') {
-            saveTaskFormMessage = err.toString();
-          } else {
-            saveTaskFormMessage = res.body.error;
-          }
+      let tags = res.body.plaintags;
+      saveTaskFormMessage = 'New task saved with these tags: ' + tags.join(', ');
+      this.mergeState({saveTaskFormMessage: saveTaskFormMessage});
+    })
+  }
 
-          this.mergeState({saveTaskFormMessage: saveTaskFormMessage});
+  setEmptyChatRooms(){
+    let that = this;
 
+    return this.reqPost('/rows/list', ['type:chatroom'])
+      .then(resp => {
+        let [respErr, res] = resp;
+        if (respErr) {
+          that.mergeState({chatFlashMessage: respErr});
           return
         }
 
-        // Success
+        console.log("No error fetching list of chatrooms...");
 
-        let tags = res.body.plaintags;
-        saveTaskFormMessage = 'New task saved with these tags: ' + tags.join(', ')
+        let rooms = [];
 
-        this.mergeState({saveTaskFormMessage: saveTaskFormMessage});
-      });
+        res.body.map(row => {
+          let room = {
+            key: that.tagByPrefix(row.plaintags, 'id:'),
+            roomname: that.tagByPrefixStripped(row.plaintags, 'roomname:'),
+            tags: row.plaintags
+          }
+          rooms.push(room);
+        })
+
+        that.state.chat.rooms = rooms;
+
+        // that.mergeState({chatFlashMessage: 'Rooms created'});
+        console.log('Rooms created successfully');
+      }, (reason) => {
+        console.log("Fetching chat rooms and pushing them to state.chat.rooms failed: " + reason);
+      })
+  }
+
+  populateChatRooms(roomIDs = []){
+    console.log("In populateChatRooms()...");
+
+    let that = this;
+
+    // Only populate rooms the caller wants populated. If no rooms
+    // specified, populate all
+    let rooms = this.state.chat.rooms.filter(
+        r => (roomIDs.length === 0 || roomIDs.contains(r.key))
+    )
+
+    rooms.map(room => {
+      let plaintags = ['type:chatmessage', 'parentrow:'+room.key];
+
+      // Fetch messages and attach them to room
+
+      return this.reqPost('/rows/get', plaintags)
+        .then(resp => {
+          let [respErr, res] = resp;
+          if (respErr) {
+            console.log(`Error fetching messages for room ${room.roomname}` +
+                        ` with key ${room.key}: ${respErr}`);
+            return
+          }
+
+          console.log('Processing ' + res.body.length + ' messages...');
+
+          let messages = res.body.map(msgRow => {
+            let messageObj = that.parseJSON(msgRow);
+            return {
+              key: that.tagByPrefix(msgRow.plaintags, 'id:'),
+              msg: messageObj.msg,
+              from: that.tagByPrefixStripped(msgRow.plaintags, 'from:'),
+              to: that.tagByPrefixStripped(msgRow.plaintags, 'to:'),
+              tags: msgRow.plaintags
+            }
+          })
+
+          // Attach messages to existing room
+          room.messages = messages.sort(that.sortRowByCreated);
+        }, (reason) => {
+          console.log("Error fetching message rows: " + reason);
+        })
+    })
+  }
+
+  setAndPopulateChatRooms(){
+    let that = this;
+
+    this.setEmptyChatRooms()
+    .then(promise => {
+      return promise
+    }, (reason) => {
+      console.log("setEmptyChatRooms() failed: " + reason);
+    })
+    .then(promise => {
+      that.populateChatRooms()
+    }, (reason) => {
+      console.log("populateChatRooms() failed: " + reason);
+    })
+  }
+
+  sendMessage(roomKey, msg){
+    // TODO: Should add message to local DOM, not just send it to
+    // cryptagd
+
+    let row = {
+      unencrypted: this.encodeObjForPost({msg: msg}),
+      plaintags: ['parentrow:'+roomKey, 'from:'+this.myUsername,
+                  'type:chatmessage', 'app:backchannel']
+    }
+    this.reqPost('/rows', row)
+    .then(resp => {
+      let [respErr, res] = resp;
+      if (respErr) {
+        this.mergeState({chatFlashMessage: respErr})
+        return
+      }
+      this.mergeState({chatFlashMessage: 'Message sent'})
+    })
   }
 
   render(){
+    // this.setAndPopulateChatRooms();
+    this.setEmptyChatRooms();
+
     return (
       <main>
           <Nav />
           <BackChannelsList />
 
             <div className="content">
-              {/*TODO: show ChatRoom if proper tab is selected*/}
-              <ChatRoom />
+              {/*TODO: only show ChatRoom if proper tab is selected*/}
+
+              {this.state.chat.rooms.map(room => {
+                return (
+                  <div key={room.key}>
+                    <ChatRoom
+                      room={room} />
+                      myUsername={this.state.chat.myUsername}
+                      {/* Create different chatFlashMessage per room */}
+                      chatFlashMessage={this.state.chatFlashMessage} />
+                  </div>
+                )
+              })}
             </div>
+
             <ChannelSummary/>
 
           {/*<SaveTaskForm
