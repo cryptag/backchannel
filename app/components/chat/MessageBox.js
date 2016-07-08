@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
+import Message from './Message';
 
 class MessageBox extends Component {
   render(){
     let messages = this.props.messages;
+    let username = this.props.myUsername;
     return (
-      <ul>
-        {messages.map( (msg) => {
-          return <li key={msg.key}>{msg.msg}</li>
-        } )}
-      </ul>
+      <div className="message-box">
+        <ul>
+          {messages.map( (message) => {
+            return <Message key={message.key} message={message} username={username} />
+          } )}
+        </ul>
+      </div>
     )
   }
 }

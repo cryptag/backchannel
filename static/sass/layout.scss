@@ -61,6 +61,7 @@ main {
 
 .content {
   flex: 5 5;
+  padding: 15px;
 }
 
 .summary {
@@ -80,4 +81,38 @@ main {
     text-align: right;
     padding-right: 5%;
   }
+}
+
+.message-box {
+  ul {
+    li {
+      display: block;
+      border: solid 1px #eee;
+      border-radius: 10px;
+      padding: 5px 15px;
+      margin-bottom: 5px;
+      width: 80%;
+    }
+    li.chat-outgoing {
+      float: right;
+      color: white;
+      background-color: #827cd2;
+
+      .username {
+        display:none;
+      }
+    }
+    li.chat-incoming {
+      float: left;
+      color: #333;
+
+      .username {
+        display: block;
+      }
+    }
+  }
+}
+
+.message-form {
+  flex-direction: row;
 }

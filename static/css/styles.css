@@ -42,7 +42,8 @@ main {
     margin-left: 5px; }
 
 .content {
-  flex: 5 5; }
+  flex: 5 5;
+  padding: 15px; }
 
 .summary {
   flex: 1.5 1.5 10%; }
@@ -57,6 +58,30 @@ main {
   .chatroom .chat-outgoing {
     text-align: right;
     padding-right: 5%; }
+
+.message-box ul li {
+  display: block;
+  border: solid 1px #eee;
+  border-radius: 10px;
+  padding: 5px 15px;
+  margin-bottom: 5px;
+  width: 80%; }
+
+.message-box ul li.chat-outgoing {
+  float: right;
+  color: white;
+  background-color: #827cd2; }
+  .message-box ul li.chat-outgoing .username {
+    display: none; }
+
+.message-box ul li.chat-incoming {
+  float: left;
+  color: #333; }
+  .message-box ul li.chat-incoming .username {
+    display: block; }
+
+.message-form {
+  flex-direction: row; }
 
 ul {
   list-style: none; }
