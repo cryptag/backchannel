@@ -192,7 +192,7 @@ export default class App extends Component {
           <ChatRoomList
             rooms={this.state.chatRooms}
             myUsername={this.state.username}
-            onLoadChatMessages={this.loadChatMessages}/>
+            onLoadChatMessages={this.loadChatMessages} />
 
           <div className="content">
             {/*TODO: only show ChatRoom if proper tab is selected*/}

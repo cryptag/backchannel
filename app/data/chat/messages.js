@@ -3,8 +3,7 @@ import { encodeObjForPost } from '../../utils/tags';
 
 
 export function getMessagesForRoom(roomKey){
-
-  let plaintags = ['type:chatmessage', 'parentrow:' + roomKey];
+  let plaintags = ['type:chatmessage', 'parentrow:'+roomKey];
   return reqPost('/rows/get', plaintags);
 }
 
