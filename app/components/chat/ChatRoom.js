@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 class ChatRoom extends Component {
   render(){
     let myUsername = this.props.myUsername;
-    let rooms = this.props.rooms;
+    let room = this.props.room;
 
     return (
-     <div key={this.props.room.key} className="chatroom">
-        {(this.props.room.messages || []).map(message => {
+     <div className="chatroom">
+        {(room.messages || []).map(message => {
           let fromMe = (message.from === myUsername);
           return (
             <div key={message.key} className={fromMe ? 'chat-outgoing' : 'chat-incoming'}>
