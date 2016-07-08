@@ -23,3 +23,11 @@ export function getChatRooms(){
     //   that.mergeState({chatFlashMessage: respErr});
     // })
 }
+
+export function createChatRoom(backend, roomname){
+  let row = {
+    unencrypted: null,
+    plaintags: ['roomname:'+roomname, 'type:chatroom', 'app:backchannel']
+  }
+  return reqPost('/rows', row);
+}
