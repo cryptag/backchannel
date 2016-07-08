@@ -25,14 +25,17 @@ export function tagsByPrefixStripped(plaintags, prefix) {
   return stripped;
 }
 
-export function sortRowByCreated(row, nextRow){
+export function sortRowByCreated(row, nextRow, ascending = true){
   let rowTags = row.tags || row.plaintags;
-  let rowDate = tagByPrefixStripped(rowTags, 'created:');
+  let rowDate = tagByPrefix(rowTags, 'created:');
 
   let nextRowTags = nextRow.tags || nextRow.plaintags;
-  let nextRowDate = tagByPrefixStripped(nextRowTags, 'created:');
+  let nextRowDate = tagByPrefix(nextRowTags, 'created:');
 
-  return rowDate - nextRowDate;
+  if (ascending) {
+    return rowDate > nextRowDate;
+  }
+  return rowDate < nextRowDate;
 }
 
 export function parseJSON(str){
