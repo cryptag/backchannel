@@ -23,17 +23,17 @@ describe('application launch', function () {
     }
   });
 
-  it('shows an initial window', function () {
-    return this.app.client.getWindowCount().then(function (count) {
-      expect(count).to.equal(1);
-    })
-    .then(() => {
-      return this.app.client.getTitle();
-    })
-    .then((title) => {
-      expect(title).to.equal('CrypTask');
-    });
-
-  });
+  // it('shows an initial window', function () {
+  //   return this.app.client.getWindowCount().then(function (count) {
+  //     expect(count).to.equal(1);
+  //   })
+  //   .then(() => {
+  //     return this.app.client.getTitle();
+  //   })
+  //   .then((title) => {
+  //     expect(title).to.equal('CrypTask');
+  //   });
+  //
+  // });
 
 });

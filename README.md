@@ -47,11 +47,36 @@ meanwhile, in another terminal, run CrypTask (see next section).
 
 ## Installation and Running
 
+You'll need both node (and npm) and (bower)[https://bower.io/] installed.
+
 ``` $ npm install ```
+
+``` $ bower install ```
+
+You should also install gulp as a global tool on your system:
+
+``` $ npm install gulp -g ```
 
 then
 
 ``` $ npm start ```
+
+## Development
+
+In order to edit the CSS styles, edit the SASS files inside of static/sass. The files in static/css are
+generated automatically from the SASS files by running:
+
+``` $ gulp sass ```
+
+If you run the default gulp task:
+
+``` $ gulp ```
+
+gulp will run in the background and recompile the CSS any time you make changes to the SASS files.
+
+In order to add any new bower libraries to the HTML files:
+
+``` $ gulp inject ```
 
 ## Testing
 
