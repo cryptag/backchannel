@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
 import Nav from './components/layout/Nav';
-import BackChannelsList from './components/layout/BackChannelsList';
 import ChannelSummary from './components/layout/ChannelSummary';
 import ChatRoomList from './components/chat/ChatRoomList';
+import MessageBox from './components/chat/MessageBox';
 
 import { getChatRooms } from './data/chat/rooms';
-import { getMessagesForRoom } from './data/chat/messages';
+import { getMessagesForRoom, createMessage } from './data/chat/messages';
 
 import { formatChatRooms, formatMessages } from './utils/chat';
 
@@ -30,12 +30,8 @@ export default class App extends Component {
       // Chat
       chatRooms: [],
       username: 'steve',
-      chatFlashMessage: '',
-      chat: {
-        myUsername: 'steve',
-        roomList: [],
-        rooms: []
-      }
+      messages: [],
+      chatFlashMessage: ''
     };
 
     // this.onChange = this.onChange.bind(this);
@@ -48,36 +44,32 @@ export default class App extends Component {
 
     // ChatRoom
     this.sendMessage = this.sendMessage.bind(this);
+    this.loadChatMessages = this.loadChatMessages.bind(this);
   }
 
   componentDidMount(){
-    // this.setAndPopulateChatRooms();
-
     this.loadChatRooms();
   }
 
   loadChatRooms(){
     getChatRooms().then( (response) => {
       let rooms = formatChatRooms(response.body);
-
+      console.log(rooms);
       this.setState({
         chatRooms: rooms
       });
-
-      this.loadChatMessages();
     });
   }
 
-  loadChatMessages(){
-    let rooms = this.state.chatRooms;
-    rooms.forEach((room) => {
-      getMessagesForRoom(room.key)
-        .then((response) => {
-          let messages = formatMessages(response.body);
-          console.log(messages);
-          room.messages = messages;
+  loadChatMessages(roomKey){
+    getMessagesForRoom(roomKey)
+      .then((response) => {
+        let messages = formatMessages(response.body);
+        console.log(messages);
+        this.setState({
+          messages: messages
         });
-    });
+      });
   }
 
   mergeState(obj){
@@ -105,79 +97,6 @@ export default class App extends Component {
   //       that.mergeState(update)
   //     }
   //   }
-  // }
-
-  // tagByPrefix(plaintags, prefix) {
-  //   for (let i = 0; i < plaintags.length; i++) {
-  //     if (plaintags[i].startsWith(prefix)) {
-  //       return plaintags[i];
-  //     }
-  //   }
-  //   return '';
-  // }
-  //
-  // tagByPrefixStripped(plaintags, prefix) {
-  //   return this.tagByPrefix(plaintags, prefix).slice(prefix.length);
-  // }
-  //
-  // tagsByPrefixStripped(plaintags, prefix) {
-  //   let stripped = [];
-  //   for (let i = 0; i < plaintags.length; i++) {
-  //     if (plaintags[i].startsWith(prefix)) {
-  //       // Strip off prefix
-  //       stripped.push(plaintags[i].slice(prefix.length));
-  //     }
-  //   }
-  //   return stripped;
-  // }
-  //
-  // sortRowByCreated(row, nextRow){
-  //   let rowTags = row.tags || row.plaintags;
-  //   let rowDate = this.tagByPrefixStripped(rowTags, 'created:');
-  //
-  //   let nextRowTags = nextRow.tags || nextRow.plaintags;
-  //   let nextRowDate = this.tagByPrefixStripped(nextRowTags, 'created:');
-  //
-  //   return rowDate - nextRowDate;
-  // }
-  //
-  // parseJSON(str){
-  //   console.log(str);
-  //   return JSON.parse(utf8.decode(atob(str.unencrypted)));
-  // }
-  //
-  // encodeObjForPost(obj){
-  //   return btoa(utf8.encode(JSON.stringify(obj)));
-  // }
-  //
-  // cleanedFields(s){
-  //   let fields = s.trim().replace(',', ' ').split(/\s+/g);
-  //   return fields.filter(f => f !== '');
-  // }
-
-  // reqPost(urlSuffix, data){
-  //   return new Promise((resolve, reject) => {
-  //     request
-  //       .post(urlSuffix)
-  //       .use(cryptagdPrefix)
-  //       .send(data)
-  //       .end((err, res) => {
-  //         let respErr = '';
-  //
-  //         if (err) {
-  //           if (typeof res === 'undefined') {
-  //             respErr = err.toString();
-  //           } else {
-  //             // cryptagd's error format: {"error": "..."}
-  //             respErr = res.body.error;
-  //           }
-  //
-  //           reject(respErr);
-  //         }
-  //
-  //         resolve(res);
-  //       });
-  //   })
   // }
 
   // executeSearch(e){
@@ -257,114 +176,30 @@ export default class App extends Component {
   //     })
   // }
 
-  // setEmptyChatRooms(){
-  //   let that = this;
-  //
-  //   return this.reqPost('/rows/list', ['type:chatroom'])
-  //     .then(res => {
-  //       let rooms = [];
-  //
-  //       res.body.map(row => {
-  //         let room = {
-  //           key: that.tagByPrefix(row.plaintags, 'id:'),
-  //           roomname: that.tagByPrefixStripped(row.plaintags, 'roomname:'),
-  //           tags: row.plaintags
-  //         }
-  //         rooms.push(room);
-  //       })
-  //
-  //       that.state.chat.rooms = rooms;
-  //
-  //       that.mergeState({chatFlashMessage: 'Rooms created'});
-  //     }, (respErr) => {
-  //       console.log("Fetching chat rooms and pushing them to state.chat.rooms failed: " + respErr);
-  //       that.mergeState({chatFlashMessage: respErr});
-  //     })
-  // }
-
-  // populateChatRooms(roomIDs = []){
-  //   let that = this;
-  //
-  //   // Only populate rooms the caller wants populated. If no rooms
-  //   // specified, populate all
-  //   let rooms = this.state.chat.rooms.filter(
-  //       r => (roomIDs.length === 0 || roomIDs.contains(r.key))
-  //   )
-  //
-  //   rooms.map(room => {
-  //     let plaintags = ['type:chatmessage', 'parentrow:'+room.key];
-  //
-  //     // Fetch messages and attach them to room
-  //
-  //     return that.reqPost('/rows/get', plaintags)
-  //       .then(res => {
-  //         console.log('Processing ' + res.body.length + ' messages...');
-  //
-  //         let messages = res.body.map(msgRow => {
-  //           let messageObj = that.parseJSON(msgRow);
-  //           return {
-  //             key: that.tagByPrefix(msgRow.plaintags, 'id:'),
-  //             msg: messageObj.msg,
-  //             from: that.tagByPrefixStripped(msgRow.plaintags, 'from:'),
-  //             to: that.tagByPrefixStripped(msgRow.plaintags, 'to:'),
-  //             tags: msgRow.plaintags
-  //           }
-  //         })
-  //
-  //         // Attach messages to existing room
-  //         room.messages = messages.sort(that.sortRowByCreated.bind(that));
-  //       }, (respErr) => {
-  //         console.log(`Error fetching messages for room ${room.roomname}` +
-  //                     ` with key ${room.key}: ${respErr}`);
-  //       })
-  //   })
-  // }
-
-  setAndPopulateChatRooms(){
-    let that = this;
-
-    getRooms()
-    .then(promise => {
-      return promise
-    }, (reason) => {
-      console.log("setEmptyChatRooms() failed: " + reason);
-    })
-    .then(promise => {
-      that.populateChatRooms()
-    }, (reason) => {
-      console.log("populateChatRooms() failed: " + reason);
-    })
-  }
-
   sendMessage(roomKey, msg){
+    let username = this.state.username;
+    createMessage(roomKey, msg, username).then( (response) => {
+      console.log(response);
+    });
     // TODO: Should add message to local DOM, not just send it to
     // cryptagd
-
-    let row = {
-      unencrypted: this.encodeObjForPost({msg: msg}),
-      plaintags: ['parentrow:'+roomKey, 'from:'+this.myUsername,
-                  'type:chatmessage', 'app:backchannel']
-    }
-    this.reqPost('/rows', row)
-    .then(res => {
-      this.mergeState({chatFlashMessage: 'Message sent'});
-    }, (respErr) => {
-      this.mergeState({chatFlashMessage: respErr})
-    })
   }
 
   render(){
     return (
       <main>
           <Nav />
-          <BackChannelsList />
+          <ChatRoomList
+            rooms={this.state.chatRooms}
+            myUsername={this.state.username}
+            onLoadChatMessages={this.loadChatMessages}/>
 
-            <div className="content">
-              {/*TODO: only show ChatRoom if proper tab is selected*/}
-              <ChatRoomList rooms={this.state.chatRooms} myUsername={this.state.username} />
-            </div>
+          <div className="content">
+            {/*TODO: only show ChatRoom if proper tab is selected*/}
+            <MessageBox messages={this.state.messages} />
+          </div>
 
-            <ChannelSummary/>
+          <ChannelSummary/>
       </main>
     );
   }
