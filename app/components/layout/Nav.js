@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 
 class Nav extends Component {
   render(){
@@ -14,13 +15,13 @@ class Nav extends Component {
             <a href="#"><i className="fa fa-2x fa-globe"></i></a>
           </div>
           <div className="tab">
-            <a href="#"><i className="fa fa-2x fa-comment-o"></i></a>
+            <Link to="/"><i className="fa fa-2x fa-comment-o"></i></Link>
           </div>
           <div className="tab">
             <a href="#"><i className="fa fa-2x fa-users"></i></a>
           </div>
           <div className="tab">
-            <a href="#"><i className="fa fa-2x fa-cog"></i></a>
+            <Link to="/settings"><i className="fa fa-2x fa-cog"></i></Link>
           </div>
         </nav>
       </div>

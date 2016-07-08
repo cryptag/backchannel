@@ -83,10 +83,9 @@ export default class App extends Component {
             myUsername={this.state.username}
             onLoadChatMessages={this.loadChatMessages} />
 
-          <div className="content">
-            {/*TODO: only show ChatRoom if proper tab is selected*/}
-            <ChatContainer messages={this.state.messages} myUsername={this.state.username} />
-          </div>
+          <ChatContainer
+            messages={this.state.messages}
+            myUsername={this.state.username} />
 
           <ChannelSummary/>
       </main>

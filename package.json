@@ -39,6 +39,7 @@
     "mocha": "^2.5.3",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
+    "react-router": "^2.5.2",
     "superagent": "^2.0.0",
     "superagent-prefix": "^0.0.2",
     "utf8": "^2.1.1"
