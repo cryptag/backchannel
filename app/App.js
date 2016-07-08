@@ -54,7 +54,7 @@ export default class App extends Component {
   loadChatRooms(){
     getChatRooms().then( (response) => {
       let rooms = formatChatRooms(response.body);
-      console.log(rooms);
+      console.log("Rooms:", rooms);
       this.setState({
         chatRooms: rooms
       });
@@ -65,7 +65,7 @@ export default class App extends Component {
     getMessagesForRoom(roomKey)
       .then((response) => {
         let messages = formatMessages(response.body);
-        console.log(messages);
+        console.log("Messages:", messages);
         this.setState({
           messages: messages
         });
