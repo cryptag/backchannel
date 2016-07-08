@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
 import Nav from './components/layout/Nav';
 import ChannelSummary from './components/layout/ChannelSummary';
@@ -17,13 +18,15 @@ export default class App extends Component {
     this.state = {
       // Chat
       chatRooms: [],
-      username: 'steve',
-      messages: []
+      username: 'jim',
+      messages: [],
+      isLoadingMessages: true
     };
 
     // ChatRoom
     this.sendMessage = this.sendMessage.bind(this);
     this.loadChatMessages = this.loadChatMessages.bind(this);
+    this.onSendMessage = this.onSendMessage.bind(this);
   }
 
   componentDidMount(){
@@ -37,26 +40,43 @@ export default class App extends Component {
       this.setState({
         chatRooms: rooms
       });
+
+      if (rooms.length > 0){
+        let defaultChatroom = this.state.chatRooms[0];
+        this.loadChatroom(defaultChatroom.key);
+      }
     });
   }
 
-  loadMessagesForDefaultChatroom(){
-    let rooms = this.state.chatRooms;
-    if (rooms.length > 0){
-      let defaultChatroom = this.state.chatrooms[0];
-      this.loadChatMessages(defaultChatroom.key);
-    }
+  loadChatroom(roomKey){
+    this.loadChatMessages(roomKey);
   }
 
   loadChatMessages(roomKey){
+    // TODO: how better to handle the 'no messages' loading case?
+    this.setState({
+      isLoadingMessages: true
+    });
+
     getMessagesForRoom(roomKey)
       .then((response) => {
         let messages = formatMessages(response.body);
         console.log("Messages:", messages);
         this.setState({
-          messages: messages
+          messages: messages,
+          isLoadingMessages: false
+        });
+      }, (error) => {
+        this.setState({
+          messages: [],
+          isLoadingMessages: false
         });
       });
+  }
+
+  onSendMessage(e){
+    e.preventDefault();
+    console.log(e.target);
   }
 
   mergeState(obj){
@@ -83,10 +103,12 @@ export default class App extends Component {
             myUsername={this.state.username}
             onLoadChatMessages={this.loadChatMessages} />
 
-          <div className="content">
             {/*TODO: only show ChatRoom if proper tab is selected*/}
-            <ChatContainer messages={this.state.messages} myUsername={this.state.username} />
-          </div>
+          <ChatContainer
+            messages={this.state.messages}
+            myUsername={this.state.username}
+            onSendMessage={this.onSendMessage}
+            isLoadingMessages={this.state.isLoadingMessages} />
 
           <ChannelSummary/>
       </main>

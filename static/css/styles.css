@@ -31,7 +31,7 @@ main {
   .channels ul li {
     color: #978de3;
     padding: 10px; }
-    .channels ul li ul.chat li {
+    .channels ul li ul.chat li a {
       color: white;
       font-size: 16px; }
     .channels ul li .name {
@@ -78,13 +78,23 @@ main {
   float: left;
   color: #333; }
   .message-box ul li.chat-incoming .username {
-    display: block; }
+    display: block;
+    font-style: italic; }
 
 .message-form {
-  flex-direction: row; }
+  flex-direction: column; }
 
 ul {
   list-style: none; }
+
+.throbber .dot {
+  margin: 10px;
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+  background-color: #999;
+  float: left;
+  transform: scale(0.7); }
 
 .navigation {
   background-color: #0f0f17;
