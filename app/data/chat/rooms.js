@@ -9,7 +9,7 @@ export function getChatRooms(){
     //   res.body.map(row => {
     //     let room = {
     //       key: tagByPrefix(row.plaintags, 'id:'),
-    //       roomname: tagByPrefixStripped(row.plaintags, 'roomname:'),
+    //       roomname: tagByPrefixStripped(row.plaintags, 'name:'),
     //       tags: row.plaintags
     //     }
     //     rooms.push(room);
@@ -27,7 +27,7 @@ export function getChatRooms(){
 export function createChatRoom(backend, roomname){
   let row = {
     unencrypted: null,
-    plaintags: ['roomname:'+roomname, 'type:chatroom', 'app:backchannel']
+    plaintags: ['name:'+roomname, 'type:chatroom', 'app:backchannel']
   }
   return reqPost('/rows', row);
 }

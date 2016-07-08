@@ -4,7 +4,7 @@ export function formatChatRooms(rawRooms){
   return rawRooms.map(row => {
     return {
       key: tagByPrefix(row.plaintags, 'id:'),
-      roomname: tagByPrefixStripped(row.plaintags, 'roomname:'),
+      roomname: tagByPrefixStripped(row.plaintags, 'name:', 'roomname:'),
       tags: row.plaintags
     }
   });
