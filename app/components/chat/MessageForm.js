@@ -24,13 +24,11 @@ class MessageForm extends Component {
   render(){
     return (
       <div className="row message-form">
-        <form role="form" onSubmit={this.onSendMessage}>
-            <div className="col-md-10">
-              <textarea name="message" ref="messageBox"></textarea>
-            </div>
-            <div className="col-md-2">
-              <button className="btn btn-primary">Send</button>
-            </div>
+        <hr />
+        <form role="form" class="form" onSubmit={this.onSendMessage}>
+          <div className="col-md-12">
+            <input type="text" className="form-control" name="message" ref="messageBox" placeholder="Whatcha wanna say?" />
+          </div>
         </form>
       </div>
     );
