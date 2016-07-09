@@ -25,7 +25,7 @@ class MessageForm extends Component {
     return (
       <div className="row message-form">
         <hr />
-        <form role="form" class="form" onSubmit={this.onSendMessage}>
+        <form role="form" className="form" onSubmit={this.onSendMessage}>
           <div className="col-md-12">
             <input type="text" className="form-control" name="message" ref="messageBox" placeholder="Whatcha wanna say?" />
           </div>

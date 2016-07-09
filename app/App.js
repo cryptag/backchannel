@@ -62,7 +62,7 @@ export default class App extends Component {
     getMessagesForRoom(roomKey)
       .then((response) => {
         let messages = formatMessages(response.body);
-        console.log("Messages:", messages);
+        console.log("Messages: ", messages);
         this.setState({
           messages: messages,
           isLoadingMessages: false
