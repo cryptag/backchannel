@@ -64,7 +64,7 @@ main {
     padding-right: 5%; }
 
 .message-box {
-  height: calc(100vh - 100px);
+  height: calc(100vh - 120px);
   overflow-y: scroll; }
   .message-box ul li {
     display: block;
