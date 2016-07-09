@@ -7,9 +7,9 @@ export function getMessagesForRoom(roomKey){
   return reqPost('/rows/get', plaintags);
 }
 
-export function createMessage(roomKey, msg, username){
+export function createMessage(roomKey, message, username){
   let row = {
-    unencrypted: encodeObjForPost({msg: msg}),
+    unencrypted: encodeObjForPost({msg: message}),
     plaintags: ['parentrow:'+roomKey, 'from:'+username,
                 'type:chatmessage', 'app:backchannel']
   }

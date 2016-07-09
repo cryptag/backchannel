@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 
 import Nav from './components/layout/Nav';
 import ChannelSummary from './components/layout/ChannelSummary';
@@ -24,7 +23,6 @@ export default class App extends Component {
     };
 
     // ChatRoom
-    this.sendMessage = this.sendMessage.bind(this);
     this.loadChatMessages = this.loadChatMessages.bind(this);
     this.onSendMessage = this.onSendMessage.bind(this);
   }
@@ -49,6 +47,9 @@ export default class App extends Component {
   }
 
   loadChatroom(roomKey){
+    this.setState({
+      currentRoomKey: roomKey
+    });
     this.loadChatMessages(roomKey);
   }
 
@@ -74,24 +75,13 @@ export default class App extends Component {
       });
   }
 
-  onSendMessage(e){
-    e.preventDefault();
-    console.log(e.target);
-  }
-
-  mergeState(obj){
-    this.setState(
-      Object.assign(this.state, obj)
-    )
-  }
-
-  sendMessage(roomKey, msg){
-    let username = this.state.username;
-    createMessage(roomKey, msg, username).then( (response) => {
-      console.log(response);
-    });
-    // TODO: Should add message to local DOM, not just send it to
-    // cryptagd
+  onSendMessage(message){
+    let { currentRoomKey, username } = this.state;
+    createMessage(currentRoomKey, message, username)
+      .then((response) => {
+        console.log(response);
+        this.loadChatMessages(currentRoomKey);
+      });
   }
 
   render(){

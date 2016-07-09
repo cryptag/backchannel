@@ -20,6 +20,10 @@ main {
   box-sizing: border-box;
   display: flex; }
 
+/* ugly hack to undo flexbox layout here since I don't know flexbox. ;( */
+.content {
+  display: block; }
+
 .navigation {
   flex: 0.5;
   flex-direction: column; }

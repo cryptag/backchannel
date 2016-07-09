@@ -16,8 +16,10 @@ class MessageBox extends Component {
     }
 
     return (
-      <div className="message-box">
-        {content}
+      <div className="row message-box">
+        <div className="col-md-12">
+          {content}
+        </div>
       </div>
     )
   }
