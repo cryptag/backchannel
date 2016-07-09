@@ -23,7 +23,7 @@ export default class App extends Component {
     };
 
     // ChatRoom
-    this.loadChatMessages = this.loadChatMessages.bind(this);
+    this.loadChatroom = this.loadChatroom.bind(this);
     this.onSendMessage = this.onSendMessage.bind(this);
   }
 
@@ -47,6 +47,7 @@ export default class App extends Component {
   }
 
   loadChatroom(roomKey){
+    console.log('loadChatroom: ', roomKey);
     this.setState({
       currentRoomKey: roomKey
     });
@@ -55,9 +56,6 @@ export default class App extends Component {
 
   loadChatMessages(roomKey){
     // TODO: how better to handle the 'no messages' loading case?
-    this.setState({
-      isLoadingMessages: true
-    });
 
     getMessagesForRoom(roomKey)
       .then((response) => {
@@ -76,10 +74,14 @@ export default class App extends Component {
   }
 
   onSendMessage(message){
+    this.setState({
+      isLoadingMessages: true
+    });
+
     let { currentRoomKey, username } = this.state;
+    console.log('onSendMessage: ', currentRoomKey);
     createMessage(currentRoomKey, message, username)
       .then((response) => {
-        console.log(response);
         this.loadChatMessages(currentRoomKey);
       });
   }
@@ -91,9 +93,9 @@ export default class App extends Component {
           <ChatRoomList
             rooms={this.state.chatRooms}
             myUsername={this.state.username}
-            onLoadChatMessages={this.loadChatMessages} />
+            onSelectRoom={this.loadChatroom} />
 
-            {/*TODO: only show ChatRoom if proper tab is selected*/}
+          {/*TODO: only show ChatRoom if proper tab is selected*/}
           <ChatContainer
             messages={this.state.messages}
             myUsername={this.state.username}

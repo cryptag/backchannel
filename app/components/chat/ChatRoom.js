@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class ChatRoom extends Component {
   onSelectRoom(){
     let roomKey = this.props.chatRoom.key;
-    this.props.onLoadChatMessages(roomKey);
+    this.props.onSelectRoom(roomKey);
   }
 
   render(){

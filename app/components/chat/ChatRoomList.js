@@ -30,7 +30,10 @@ class ChatRoomList extends Component {
 
               <ul className="chat">
                 {channel.chatRooms.map( (chatRoom) => {
-                  return <ChatRoom key={chatRoom.key} chatRoom={chatRoom} onLoadChatMessages={this.props.onLoadChatMessages}/>
+                  return <ChatRoom
+                    key={chatRoom.key}
+                    chatRoom={chatRoom}
+                    onSelectRoom={this.props.onSelectRoom}/>
                 })}
               </ul>
             </li>
