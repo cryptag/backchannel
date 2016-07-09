@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Task management app",
   "main": "main.js",
+  "bugs": {
+    "url": "https://github.com/elimisteve/backchannel/issues"
+  },
   "scripts": {
     "start": "node_modules/.bin/electron main.js",
     "build": "electron-packager ./ CrypTask --platform=darwin --arch=x64 --overwrite",
