@@ -63,30 +63,32 @@ main {
     text-align: right;
     padding-right: 5%; }
 
-.message-box ul li {
-  display: block;
-  border: solid 1px #eee;
-  border-radius: 10px;
-  padding: 5px 15px;
-  margin-bottom: 5px;
-  width: 80%; }
-
-.message-box ul li.chat-outgoing {
-  float: right;
-  color: white;
-  background-color: #827cd2; }
-  .message-box ul li.chat-outgoing .username {
-    display: none; }
-
-.message-box ul li.chat-incoming {
-  float: left;
-  color: #333; }
-  .message-box ul li.chat-incoming .username {
+.message-box {
+  height: calc(100vh - 100px);
+  overflow-y: scroll; }
+  .message-box ul li {
     display: block;
-    font-style: italic; }
+    border: solid 1px #eee;
+    border-radius: 10px;
+    padding: 5px 15px;
+    margin-bottom: 5px;
+    width: 80%; }
+  .message-box ul li.chat-outgoing {
+    float: right;
+    color: white;
+    background-color: #827cd2; }
+    .message-box ul li.chat-outgoing .username {
+      display: none; }
+  .message-box ul li.chat-incoming {
+    float: left;
+    color: #333; }
+    .message-box ul li.chat-incoming .username {
+      display: block;
+      font-style: italic; }
 
 .message-form {
-  flex-direction: column; }
+  flex-direction: column;
+  height: 100px; }
 
 ul {
   list-style: none; }

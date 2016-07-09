@@ -1,5 +1,6 @@
 const utf8 = require('utf8');
 const atob = require('atob');
+const btoa = require('btoa');
 
 export function tagByPrefix(plaintags, ...prefixes) {
   let prefix = '';

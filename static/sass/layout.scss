@@ -91,6 +91,9 @@ main {
 }
 
 .message-box {
+  height: calc(100vh - 100px);
+  overflow-y: scroll;
+
   ul {
     li {
       display: block;
@@ -123,4 +126,5 @@ main {
 
 .message-form {
   flex-direction: column;
+  height: 100px;
 }
