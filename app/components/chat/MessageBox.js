@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import notifier from 'node-notifier';
 
 import MessageList from './MessageList';
-
 import Throbber from '../general/Throbber';
 
 import { playNotification } from '../../utils/audio';
@@ -37,6 +37,10 @@ class MessageBox extends Component {
       let content = message.msg.toLowerCase();
       let username = this.props.myUsername.toLowerCase();
       if (content.indexOf('@' + username) > -1){
+        notifier.notify({
+          'title': username,
+          'message': message.msg
+        });
         playNotification();
       }
     });

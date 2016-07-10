@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "mocha": "^2.5.3",
+    "node-notifier": "^4.6.0",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "superagent": "^2.0.0",
