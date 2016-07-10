@@ -13,6 +13,15 @@ main {
   height: 100vh;
   display: flex; }
 
+.username-greeting {
+  display: inline-block;
+  color: white;
+  font-weight: bold; }
+
+.btn-toolbar {
+  display: inline-block;
+  margin-left: 15px; }
+
 .navigation,
 .channels,
 .content,

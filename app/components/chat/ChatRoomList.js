@@ -5,9 +5,6 @@ import SetUsernameModal from '../modals/SetUsername';
 
 import { getChatRooms } from '../../data/chat/rooms';
 
-let usernameStyles = {
-  'color': 'white'
-};
 
 class ChatRoomList extends Component {
 
@@ -46,10 +43,11 @@ class ChatRoomList extends Component {
           })}
         </ul>
 
-        <div style={usernameStyles}>
-          <span>Hello, {this.props.myUsername}</span>
+        <div>
+          <div className="username-greeting">Hello, {this.props.myUsername}</div>
+
           <SetUsernameModal
-            username={this.props.myUsername}
+            username={this.props.username}
             onUpdateUsername={this.props.onUpdateUsername} />
         </div>
       </div>

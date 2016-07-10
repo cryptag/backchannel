@@ -43,7 +43,6 @@ export default class App extends Component {
   loadChatRooms(){
     getChatRooms().then( (response) => {
       let rooms = formatChatRooms(response.body);
-      console.log("Rooms:", rooms);
       this.setState({
         chatRooms: rooms
       });
@@ -56,7 +55,6 @@ export default class App extends Component {
   }
 
   loadChatroom(roomKey){
-    console.log('loadChatroom: ', roomKey);
     this.setState({
       currentRoomKey: roomKey
     });
@@ -69,7 +67,6 @@ export default class App extends Component {
     getMessagesForRoom(roomKey)
       .then((response) => {
         let messages = formatMessages(response.body);
-        console.log("Messages: ", messages);
         this.setState({
           messages: messages,
           isLoadingMessages: false
@@ -90,7 +87,6 @@ export default class App extends Component {
     playNotification();
 
     let { currentRoomKey, username } = this.state;
-    console.log('onSendMessage: ', currentRoomKey);
     createMessage(currentRoomKey, message, username)
       .then((response) => {
         this.loadChatMessages(currentRoomKey);
@@ -103,7 +99,7 @@ export default class App extends Component {
           <Nav />
           <ChatRoomList
             rooms={this.state.chatRooms}
-            myUsername={this.state.username}
+            username={this.state.username}
             onSelectRoom={this.loadChatroom}
             onUpdateUsername={this.onUpdateUsername} />
 
