@@ -38,7 +38,7 @@ class MessageBox extends Component {
       let username = this.props.myUsername.toLowerCase();
       if (content.indexOf('@' + username) > -1){
         notifier.notify({
-          'title': username,
+          'title': message.from,
           'message': message.msg
         });
         playNotification();
