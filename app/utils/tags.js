@@ -39,16 +39,10 @@ export function tagsByPrefixStripped(plaintags, prefix) {
 }
 
 export function sortRowByCreated(row, nextRow){
-  let date = tagByPrefixStripped(row.tags || row.plaintags, 'created:');
-  let next = tagByPrefixStripped(nextRow.tags || nextRow.plaintags, 'created:');
+  let date = tagByPrefix(row.tags || row.plaintags, 'created:');
+  let next = tagByPrefix(nextRow.tags || nextRow.plaintags, 'created:');
 
-  if (date.length < next.length) {
-    date += '0'.repeat(next.length - date.length);
-  } else if (next.length < date.length) {
-    next += '0'.repeat(date.length - next.length);
-  }
-
-  return date - next;
+  return date.localeCompare(next);
 }
 
 export function parseJSON(str){
