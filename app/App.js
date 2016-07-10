@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
 import Nav from './components/layout/Nav';
 import ChannelSummary from './components/layout/ChannelSummary';
@@ -26,10 +27,17 @@ export default class App extends Component {
     // ChatRoom
     this.loadChatroom = this.loadChatroom.bind(this);
     this.onSendMessage = this.onSendMessage.bind(this);
+    this.onUpdateUsername = this.onUpdateUsername.bind(this);
   }
 
   componentDidMount(){
     this.loadChatRooms();
+  }
+
+  onUpdateUsername(username){
+    this.setState({
+      username: username
+    });
   }
 
   loadChatRooms(){
@@ -96,7 +104,8 @@ export default class App extends Component {
           <ChatRoomList
             rooms={this.state.chatRooms}
             myUsername={this.state.username}
-            onSelectRoom={this.loadChatroom} />
+            onSelectRoom={this.loadChatroom}
+            onUpdateUsername={this.onUpdateUsername} />
 
           {/*TODO: only show ChatRoom if proper tab is selected*/}
           <ChatContainer

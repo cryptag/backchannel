@@ -42,6 +42,7 @@
   "dependencies": {
     "mocha": "^2.5.3",
     "react": "^15.1.0",
+    "react-bootstrap": "^0.29.5",
     "react-dom": "^15.1.0",
     "superagent": "^2.0.0",
     "superagent-prefix": "^0.0.2",

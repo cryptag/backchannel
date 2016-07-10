@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
+import ChatRoom from './ChatRoom';
+
+import SetUsernameModal from '../modals/SetUsername';
 
 import { getChatRooms } from '../../data/chat/rooms';
-import ChatRoom from './ChatRoom';
+
+let usernameStyles = {
+  'color': 'white'
+};
 
 class ChatRoomList extends Component {
 
@@ -39,6 +45,13 @@ class ChatRoomList extends Component {
             </li>
           })}
         </ul>
+
+        <div style={usernameStyles}>
+          <span>Hello, {this.props.myUsername}</span>
+          <SetUsernameModal
+            username={this.props.myUsername}
+            onUpdateUsername={this.props.onUpdateUsername} />
+        </div>
       </div>
     );
   }
