@@ -1,4 +1,4 @@
-import { tagByPrefix, tagByPrefixStripped, parseJSON, sortRowByCreated } from './tags';
+import { tagByPrefix, tagByPrefixStripped, parseUnencrypted, sortRowByCreated } from './tags';
 
 export function formatChatRooms(rawRooms){
   return rawRooms.map(row => {
@@ -12,7 +12,7 @@ export function formatChatRooms(rawRooms){
 
 export function formatMessages(rawMessages){
   let messages = rawMessages.map(msgRow => {
-    let messageObj = parseJSON(msgRow);
+    let messageObj = parseUnencrypted(msgRow.unencrypted);
     return {
       key: tagByPrefix(msgRow.plaintags, 'id:'),
       msg: messageObj.msg,

@@ -51,8 +51,8 @@ export function sortRowByCreated(row, nextRow, ascending = true){
   return rowDate < nextRowDate;
 }
 
-export function parseJSON(str){
-  return JSON.parse(utf8.decode(atob(str.unencrypted)));
+export function parseUnencrypted(str){
+  return JSON.parse(utf8.decode(atob(str)));
 }
 
 export function encodeObjForPost(obj){
