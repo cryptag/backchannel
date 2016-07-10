@@ -5,12 +5,45 @@ import MessageList from './MessageList';
 
 import Throbber from '../general/Throbber';
 
+import { playNotification } from '../../utils/audio';
+
 class MessageBox extends Component {
   componentDidUpdate(prevProps){
-    if (prevProps.messages.length !== this.props.messages.length){
+    if (this.shouldScroll(prevProps)){
       this.scrollToBottom();
     }
+  }
 
+  shouldScroll(prevProps){
+    let hasNewMessages = this.hasNewMessages(prevProps);
+    if (hasNewMessages){
+      console.log('hasNewMessages');
+      this.checkNewMessages(prevProps.messages);
+    }
+    return prevProps.isLoadingMessages !== this.props.isLoadingMessages || hasNewMessages;
+  }
+
+  checkNewMessages(prevMessages){
+    let messageIds = prevMessages.map( (message) => {
+      return message.key;
+    });
+
+    let newMessages = this.props.messages.filter((message) => {
+      return messageIds.indexOf(message.key) === -1;
+    });
+
+    // better logic needed, but this will play a notification if you've been mentioned.
+    newMessages.forEach( (message) => {
+      let content = message.msg.toLowerCase();
+      let username = this.props.myUsername.toLowerCase();
+      if (content.indexOf('@' + username) > -1){
+        playNotification();
+      }
+    });
+  }
+
+  hasNewMessages(prevProps){
+    return prevProps.messages.length !== this.props.messages.length;
   }
 
   scrollToBottom(){
@@ -22,18 +55,13 @@ class MessageBox extends Component {
     let messages = this.props.messages;
     let username = this.props.myUsername;
     let isLoadingMessages = this.props.isLoadingMessages;
-    let content;
-    if (isLoadingMessages){
-      content = <Throbber />
-    } else {
-      content = <MessageList messages={messages} username={username} />
-    }
 
     return (
       <div className="row message-box" ref="messages">
         <div className="col-md-12">
-          {content}
+          <MessageList messages={messages} username={username} />
         </div>
+        {isLoadingMessages && <Throbber />}
       </div>
     )
   }

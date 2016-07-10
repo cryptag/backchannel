@@ -38,10 +38,12 @@ class Throbber extends Component {
 
   render(){
     return (
-      <div className="throbber" title="Your content is loading...">
-        <div className="dot" ref="firstDot"></div>
-        <div className="dot" ref="secondDot"></div>
-        <div className="dot" ref="thirdDot"></div>
+      <div className="row">
+        <div className="col-md-12 throbber" title="Your content is loading...">
+          <div className="dot" ref="firstDot"></div>
+          <div className="dot" ref="secondDot"></div>
+          <div className="dot" ref="thirdDot"></div>
+        </div>
       </div>
     )
   }
