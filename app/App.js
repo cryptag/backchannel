@@ -9,6 +9,7 @@ import { getChatRooms } from './data/chat/rooms';
 import { getMessagesForRoom, createMessage } from './data/chat/messages';
 
 import { formatChatRooms, formatMessages } from './utils/chat';
+import { playNotification } from './utils/audio';
 
 export default class App extends Component {
   constructor(props){
@@ -77,6 +78,8 @@ export default class App extends Component {
     this.setState({
       isLoadingMessages: true
     });
+
+    playNotification();
 
     let { currentRoomKey, username } = this.state;
     console.log('onSendMessage: ', currentRoomKey);
