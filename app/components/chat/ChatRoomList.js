@@ -44,7 +44,7 @@ class ChatRoomList extends Component {
         </ul>
 
         <div>
-          <div className="username-greeting">Hello, {this.props.myUsername}</div>
+          <div className="username-greeting">Hello, {this.props.username}</div>
 
           <SetUsernameModal
             username={this.props.username}
