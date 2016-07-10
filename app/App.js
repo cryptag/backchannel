@@ -9,6 +9,7 @@ import { getChatRooms } from './data/chat/rooms';
 import { getMessagesForRoom, createMessage } from './data/chat/messages';
 
 import { formatChatRooms, formatMessages } from './utils/chat';
+import { playNotification } from './utils/audio';
 
 export default class App extends Component {
   constructor(props){
@@ -17,13 +18,14 @@ export default class App extends Component {
     this.state = {
       // Chat
       chatRooms: [],
-      username: 'steve',
-      messages: []
+      username: 'jim',
+      messages: [],
+      isLoadingMessages: true
     };
 
     // ChatRoom
-    this.sendMessage = this.sendMessage.bind(this);
-    this.loadChatMessages = this.loadChatMessages.bind(this);
+    this.loadChatroom = this.loadChatroom.bind(this);
+    this.onSendMessage = this.onSendMessage.bind(this);
   }
 
   componentDidMount(){
@@ -37,41 +39,54 @@ export default class App extends Component {
       this.setState({
         chatRooms: rooms
       });
+
+      if (rooms.length > 0){
+        let defaultChatroom = this.state.chatRooms[0];
+        this.loadChatroom(defaultChatroom.key);
+      }
     });
   }
 
-  loadMessagesForDefaultChatroom(){
-    let rooms = this.state.chatRooms;
-    if (rooms.length > 0){
-      let defaultChatroom = this.state.chatrooms[0];
-      this.loadChatMessages(defaultChatroom.key);
-    }
+  loadChatroom(roomKey){
+    console.log('loadChatroom: ', roomKey);
+    this.setState({
+      currentRoomKey: roomKey
+    });
+    this.loadChatMessages(roomKey);
   }
 
   loadChatMessages(roomKey){
+    // TODO: how better to handle the 'no messages' loading case?
+
     getMessagesForRoom(roomKey)
       .then((response) => {
         let messages = formatMessages(response.body);
-        console.log("Messages:", messages);
+        console.log("Messages: ", messages);
         this.setState({
-          messages: messages
+          messages: messages,
+          isLoadingMessages: false
+        });
+      }, (error) => {
+        this.setState({
+          messages: [],
+          isLoadingMessages: false
         });
       });
   }
 
-  mergeState(obj){
-    this.setState(
-      Object.assign(this.state, obj)
-    )
-  }
-
-  sendMessage(roomKey, msg){
-    let username = this.state.username;
-    createMessage(roomKey, msg, username).then( (response) => {
-      console.log(response);
+  onSendMessage(message){
+    this.setState({
+      isLoadingMessages: true
     });
-    // TODO: Should add message to local DOM, not just send it to
-    // cryptagd
+
+    playNotification();
+
+    let { currentRoomKey, username } = this.state;
+    console.log('onSendMessage: ', currentRoomKey);
+    createMessage(currentRoomKey, message, username)
+      .then((response) => {
+        this.loadChatMessages(currentRoomKey);
+      });
   }
 
   render(){
@@ -81,12 +96,14 @@ export default class App extends Component {
           <ChatRoomList
             rooms={this.state.chatRooms}
             myUsername={this.state.username}
-            onLoadChatMessages={this.loadChatMessages} />
+            onSelectRoom={this.loadChatroom} />
 
-          <div className="content">
-            {/*TODO: only show ChatRoom if proper tab is selected*/}
-            <ChatContainer messages={this.state.messages} myUsername={this.state.username} />
-          </div>
+          {/*TODO: only show ChatRoom if proper tab is selected*/}
+          <ChatContainer
+            messages={this.state.messages}
+            myUsername={this.state.username}
+            onSendMessage={this.onSendMessage}
+            isLoadingMessages={this.state.isLoadingMessages} />
 
           <ChannelSummary/>
       </main>

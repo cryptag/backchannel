@@ -7,7 +7,6 @@ class ChannelSummary extends Component {
       <div className="summary">
         Channel Summary
 
-        
       </div>
     )
   }

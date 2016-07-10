@@ -23,6 +23,11 @@ main {
   display: flex;
 }
 
+/* ugly hack to undo flexbox layout here since I don't know flexbox. ;( */
+.content {
+  display: block;
+}
+
 .navigation {
   flex: 0.5;
   flex-direction: column;
@@ -40,9 +45,11 @@ main {
 
       ul.chat {
         li {
-          color: white;
-          font-size: 16px;
+          a {
+            color: white;
+            font-size: 16px;
 
+          }
         }
       }
 
@@ -84,6 +91,9 @@ main {
 }
 
 .message-box {
+  height: calc(100vh - 120px);
+  overflow-y: scroll;
+
   ul {
     li {
       display: block;
@@ -108,11 +118,13 @@ main {
 
       .username {
         display: block;
+        font-style: italic;
       }
     }
   }
 }
 
 .message-form {
-  flex-direction: row;
+  flex-direction: column;
+  height: 100px;
 }
