@@ -8,6 +8,13 @@ import Throbber from '../general/Throbber';
 import { playNotification } from '../../utils/audio';
 
 class MessageBox extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      notifiedIds: []
+    };
+  }
   componentDidUpdate(prevProps){
     if (this.shouldScroll(prevProps)){
       this.scrollToBottom();
@@ -17,7 +24,6 @@ class MessageBox extends Component {
   shouldScroll(prevProps){
     let hasNewMessages = this.hasNewMessages(prevProps);
     if (hasNewMessages){
-      console.log('hasNewMessages');
       this.checkNewMessages(prevProps.messages);
     }
     return prevProps.isLoadingMessages !== this.props.isLoadingMessages || hasNewMessages;
@@ -27,13 +33,16 @@ class MessageBox extends Component {
     let messageIds = prevMessages.map( (message) => {
       return message.key;
     });
+    messageIds = messageIds.concat(this.state.notifiedIds);
 
     let newMessages = this.props.messages.filter((message) => {
       return messageIds.indexOf(message.key) === -1;
     });
 
     // better logic needed, but this will play a notification if you've been mentioned.
+    let newMessageIds = [];
     newMessages.forEach( (message) => {
+      newMessageIds.push(message.key);
       let content = message.msg.toLowerCase();
       let username = this.props.myUsername.toLowerCase();
       if (content.indexOf('@' + username) > -1){
@@ -43,6 +52,11 @@ class MessageBox extends Component {
         });
         playNotification();
       }
+    });
+
+    let notifiedIds = this.state.notifiedIds;
+    this.setState({
+      notifiedIds: notifiedIds.concat(newMessageIds)
     });
   }
 
