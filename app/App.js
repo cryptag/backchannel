@@ -43,6 +43,8 @@ export default class App extends Component {
         let defaultChatroom = this.state.chatRooms[0];
         this.loadChatroom(defaultChatroom.key);
       }
+    }, (respErr) => {
+      console.log("Error loading chat rooms: " + respErr);
     });
   }
 
@@ -62,7 +64,9 @@ export default class App extends Component {
 
   loadChatMessages(roomKey){
     getMessagesForRoom(roomKey)
-      .then(this.populateMessages);
+      .then(this.populateMessages, (respErr) => {
+        console.log("Error getting messages for room: " + respErr);
+      });
   }
 
   populateMessages(response){
@@ -82,6 +86,8 @@ export default class App extends Component {
     createMessage(currentRoomKey, message, username)
       .then((response) => {
         this.loadChatMessages(currentRoomKey);
+      }, (respErr) => {
+        console.log("Error creating message: " + respErr);
       });
   }
 
