@@ -1,41 +1,61 @@
-# CrypTask
+# Backchannel
 
-This is a desktop app made with electron and React.js that is designed
-as a simple UI wrapper that talks to a local server/API/daemon
-`cryptagd` which is provided by
+This is a desktop app made with electron and React.js that talks to a
+local server/API/daemon `cryptagd` which is provided by
 [CrypTag](https://github.com/elimisteve/cryptag).
 
-## Pre-requisites
 
-Install `cryptask-sandstorm` to create and store tasks and store them
-in [Sandstorm](https://sandstorm.io/) (once you install
-[the CrypTag Sandstorm app](https://apps.sandstorm.io/app/mkq3a9jyu6tqvzf7ayqwg620q95p438ajs02j0yx50w2aav4zra0)
-).
+## Install
 
-### cryptask-sandstorm
+### Pre-requisites
 
-Make sure you have Go installed, then run:
+1. Download and install Go: https://golang.org/dl/
 
-    $ go get github.com/elimisteve/cryptag/cmd/cryptask-sandstorm
-    $ cryptask-sandstorm init <sandstorm_webkey>
+2. If you wish to have Backchannel store its data in
+[Sandstorm](https://sandstorm.io/), have a friend invite you to their
+shared folder or create one yourself by installing [the CrypTag Sandstorm app](https://apps.sandstorm.io/app/mkq3a9jyu6tqvzf7ayqwg620q95p438ajs02j0yx50w2aav4zra0)
+). You can create a free Sandstorm Oasis account at
+https://oasis.sandstorm.io/ .
 
-To generate a Sandstorm webkey,
-[install this](https://apps.sandstorm.io/app/mkq3a9jyu6tqvzf7ayqwg620q95p438ajs02j0yx50w2aav4zra0)
+3. To run Backchannel itself you'll need node, npm, and bower
+installed. On Linux, the easiest way to do this is to run:
+
+    $ curl https://raw.githubusercontent.com/creationix/nvm/v0.16.1/install.sh | bash
+    $ nvm install v6.2.2
+    $ [sudo] npm install bower
+
+
+### cryptag
+
+(If someone has invited you to a Backend -- a shared folder that can
+live in Dropbox, Sandstorm, your own server, or just about anywhere
+else -- simply decrypt the .json file you receive, put it in your
+`~/.cryptag/backends/` directory, and skip the rest of this step; here
+we only use `cryptag` to create a new Sandstorm Backend.)
+
+Install the `cryptag` command and use it to create a new Sandstorm
+Backend:
+
+    $ go get github.com/elimisteve/cryptag/cmd/cryptag
+    $ cryptag init sandstorm <name of this backend> <sandstorm web key>
+    $ cryptag setdefaultbackend <name of this backend>
+
+To generate a Sandstorm webkey, [install the CrypTag app on Sandstorm](https://apps.sandstorm.io/app/mkq3a9jyu6tqvzf7ayqwg620q95p438ajs02j0yx50w2aav4zra0)
 then _click the key icon_ near the top of your screen.
 
 If someone else gave you the Sandstorm webkey along with the decrypt
 key needed to access the tasks s/he is sharing with you, also run
 
-    $ cryptask-sandstorm setkey <key>
+    $ cryptag setkey <decryption key for the shared folder>
 
-For more on getting started with `cryptask-sandstorm`, including how
-to store and fetch tasks at the command line, simply run
+The person sharing this with you can get the key you need by running:
 
-    $ cryptask-sandstorm
+    $ cryptag -b <name of backend they're sharing with you> getkey
+
 
 ### cryptagd
 
-Install the local daemon `cryptagd` that CrypTask talks to:
+Install the local daemon `cryptagd` that Backchannel talks to:
 
     $ go get github.com/elimisteve/cryptag/servers/cryptagd
 
@@ -43,13 +63,25 @@ Run it in one terminal with
 
     $ cryptagd
 
-meanwhile, in another terminal, run CrypTask (see next section).
+To tell `cryptagd` which Backend to use by default, run it with the
+`BACKEND` environment variable set:
+
+    $ BACKEND=<backend name> cryptagd
+
+meanwhile, in another terminal, run Backchannel (see next section).
+
 
 ## Installation and Running
 
-You'll need both node (and npm) and (bower)[https://bower.io/] installed.
+``` $ git clone git clone https://github.com/elimisteve/backchannel.git
+
+``` $ cd backchannel ```
+
+``` $ nvm use v6.2.2
 
 ``` $ npm install ```
+
+(Some Linux systems require you to instead run `sudo npm install`.)
 
 ``` $ bower install ```
 
@@ -60,6 +92,7 @@ You should also install gulp as a global tool on your system:
 then
 
 ``` $ npm start ```
+
 
 ## Development
 
