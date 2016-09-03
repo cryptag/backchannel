@@ -62,7 +62,26 @@ The person sharing this with you can get the key you need by running:
 
 ### cryptagd
 
-Install the local daemon `cryptagd` that Backchannel talks to:
+First, be sure that your `GOPATH` is set:
+
+    $ go env GOPATH
+
+If your `GOPATH` is empty, run these before you `go get` `cryptagd`:
+
+    $ export GOPATH=~/gocode  # Set your GOPATH to a directory you can write to
+    $ mkdir $GOPATH
+    $ export PATH=$PATH:$GOPATH/bin
+
+Persist these changes by adding the following to your .bashrc
+(including linebreaks):
+
+    $ echo '
+export GOPATH=~/gocode
+export PATH=$PATH:$GOPATH/bin' >> ~/.bashrc
+
+
+Now you're ready to install the local server/API, `cryptagd`, that the
+Backchannel app talks to:
 
     $ go get github.com/elimisteve/cryptag/servers/cryptagd
 
