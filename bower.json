@@ -1,14 +1,15 @@
 {
-  "name": "CrypTask",
-  "description": "Task management app",
+  "name": "Backchannel",
+  "description": "Secure chat and file sharing app",
   "main": "main.js",
   "authors": [
-    "jimmcgaw <jpmcgaw@gmail.com>"
+    "jimmcgaw <jpmcgaw@gmail.com>",
+    "Steve Phillips <steve@tryingtobeawesome.com>"
   ],
   "license": "IST",
   "keywords": [
     "CrypTag",
-    "CrypTask"
+    "Backchannel"
   ],
   "homepage": "https://github.com/elimisteve/backchannel",
   "ignore": [

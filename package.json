@@ -1,20 +1,20 @@
 {
-  "name": "CrypTask",
+  "name": "Backchannel",
   "version": "0.1.0",
-  "description": "Task management app",
+  "description": "Secure chat and file sharing app",
   "main": "main.js",
   "bugs": {
     "url": "https://github.com/elimisteve/backchannel/issues"
   },
   "scripts": {
     "start": "node_modules/.bin/electron main.js",
-    "build": "electron-packager ./ CrypTask --platform=darwin --arch=x64 --overwrite",
-    "build-linux": "electron-packager ./ CrypTask --platform=linux --arch=x64 --overwrite",
+    "build": "electron-packager ./ Backchannel --platform=darwin --arch=x64 --overwrite",
+    "build-linux": "electron-packager ./ Backchannel --platform=linux --arch=x64 --overwrite",
     "test": "node_modules/.bin/mocha test/.setup.js test/**/*.test.js"
   },
   "keywords": [
     "CrypTag",
-    "CrypTask"
+    "Backchannel"
   ],
   "author": "",
   "license": "IST",
