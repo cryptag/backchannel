@@ -69,7 +69,7 @@ First, be sure that your `GOPATH` is set:
 
 If your `GOPATH` is empty, run these before you `go get` `cryptagd`:
 
-    $ export GOPATH=~/gocode  # Set your GOPATH to a directory you can write to
+    $ export GOPATH=~/work  # Set your GOPATH to a directory you can write to
     $ mkdir $GOPATH
     $ export PATH=$PATH:$GOPATH/bin
 
@@ -77,7 +77,7 @@ Persist these changes by adding the following to your .bashrc
 (including linebreaks):
 
     $ echo '
-export GOPATH=~/gocode
+export GOPATH=~/work
 export PATH=$PATH:$GOPATH/bin' >> ~/.bashrc
 
 
