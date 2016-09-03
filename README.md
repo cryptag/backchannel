@@ -97,6 +97,18 @@ To tell `cryptagd` which Backend to use by default, run it with the
 meanwhile, in another terminal, run Backchannel (see next section).
 
 
+#### Tor Support
+
+To tell all your Backends that can run over Tor to do so -- this
+includes Sandstorm, Webserver, and DropboxRemote backends, but not
+FileSystem Backends -- make sure that the Tor Browser Bundle is
+running, then run `cryptagd` with the `TOR` environment variable set:
+
+    $ TOR=1 cryptagd
+
+(`TOR=1` and `BACKEND=...` can safely be used at the same time.)
+
+
 ## Installation and Running
 
 ``` $ git clone https://github.com/elimisteve/backchannel.git ```
