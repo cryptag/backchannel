@@ -32,9 +32,13 @@ create a Sandstorm Oasis account or use Sandstorm at all.
 
 (If someone has invited you to a Backend -- a shared folder that can
 live in Dropbox, Sandstorm, your own server, or just about anywhere
-else -- simply decrypt the .json file you receive, put it in your
-`~/.cryptag/backends/` directory, and skip the rest of this step; here
-we only use `cryptag` to create a new Sandstorm Backend.)
+else -- simply decrypt the .json file you receive, run
+
+    $ mkdir -p ~/.cryptag/backends
+
+then put this (.json) file in `~/.cryptag/backends/` and skip the rest
+of this step; below we only use `cryptag` to perform the equivalent of
+creating this .json file.)
 
 Install the `cryptag` command and use it to create a new Sandstorm
 Backend:
