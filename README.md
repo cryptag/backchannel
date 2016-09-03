@@ -11,13 +11,7 @@ local server/API/daemon `cryptagd` which is provided by
 
 1. Download and install Go: https://golang.org/dl/
 
-2. If you wish to have Backchannel store its data in
-[Sandstorm](https://sandstorm.io/), have a friend invite you to their
-shared folder or create one yourself by installing [the CrypTag Sandstorm app](https://apps.sandstorm.io/app/mkq3a9jyu6tqvzf7ayqwg620q95p438ajs02j0yx50w2aav4zra0)
-). You can create a free Sandstorm Oasis account at
-https://oasis.sandstorm.io/ .
-
-3. To run Backchannel itself you'll need node, npm, and bower
+2. To run Backchannel itself you'll need node, npm, and bower
 installed. On Linux, the easiest way to do this is to run:
 
 ```
@@ -25,6 +19,13 @@ installed. On Linux, the easiest way to do this is to run:
     $ nvm install v6.2.2
     $ [sudo] npm install bower
 ```
+
+3. (Optional) _If_ you wish to have Backchannel store its data in
+[Sandstorm](https://sandstorm.io/), have a friend invite you to their
+shared folder or create one yourself by installing [the CrypTag Sandstorm app](https://apps.sandstorm.io/app/mkq3a9jyu6tqvzf7ayqwg620q95p438ajs02j0yx50w2aav4zra0)). You can create a free Sandstorm Oasis account at
+https://oasis.sandstorm.io/ . If you're not using Sandstorm to save
+your Backchannel data (messages, files, etc), you do not need to
+create a Sandstorm Oasis account or use Sandstorm at all.
 
 
 ### cryptag
