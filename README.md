@@ -1,8 +1,8 @@
 # Backchannel
 
-This is a desktop app made with electron and React.js that talks to a
-local server/API/daemon `cryptagd` which is provided by
-[CrypTag](https://github.com/elimisteve/cryptag).
+This is a user-friendly desktop chat and file-sharing app made with
+electron and React.js that talks to a local server/API/daemon,
+`cryptagd`.
 
 
 ## Install
