@@ -20,9 +20,11 @@ https://oasis.sandstorm.io/ .
 3. To run Backchannel itself you'll need node, npm, and bower
 installed. On Linux, the easiest way to do this is to run:
 
+```
     $ curl https://raw.githubusercontent.com/creationix/nvm/v0.16.1/install.sh | bash
     $ nvm install v6.2.2
     $ [sudo] npm install bower
+```
 
 
 ### cryptag
