@@ -21,7 +21,7 @@ https://oasis.sandstorm.io/ .
 installed. On Linux, the easiest way to do this is to run:
 
 ```
-    $ curl https://raw.githubusercontent.com/creationix/nvm/v0.16.1/install.sh | bash
+    $ wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.16.1/install.sh | bash
     $ nvm install v6.2.2
     $ [sudo] npm install bower
 ```
