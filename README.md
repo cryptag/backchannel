@@ -41,11 +41,12 @@ of this step; below we only use `cryptag` to perform the equivalent of
 creating this .json file.)
 
 Install the `cryptag` command and use it to create a new Sandstorm
-Backend:
+Backend and give it a name (here we chose `ss1` but it can be
+anything):
 
     $ go get github.com/elimisteve/cryptag/cmd/cryptag
-    $ cryptag init sandstorm <name of this backend> <sandstorm web key>
-    $ cryptag setdefaultbackend <name of this backend>
+    $ cryptag init sandstorm ss1 <sandstorm web key>
+    $ cryptag setdefaultbackend ss1
 
 To generate a Sandstorm webkey, [install the CrypTag app on Sandstorm](https://apps.sandstorm.io/app/mkq3a9jyu6tqvzf7ayqwg620q95p438ajs02j0yx50w2aav4zra0)
 then _click the key icon_ near the top of your screen.
@@ -92,7 +93,7 @@ Run it in one terminal with
 To tell `cryptagd` which Backend to use by default, run it with the
 `BACKEND` environment variable set:
 
-    $ BACKEND=<backend name> cryptagd
+    $ BACKEND=ss1 cryptagd
 
 meanwhile, in another terminal, run Backchannel (see next section).
 
