@@ -75,11 +75,11 @@ meanwhile, in another terminal, run Backchannel (see next section).
 
 ## Installation and Running
 
-``` $ git clone git clone https://github.com/elimisteve/backchannel.git
+``` $ git clone https://github.com/elimisteve/backchannel.git ```
 
 ``` $ cd backchannel ```
 
-``` $ nvm use v6.2.2
+``` $ nvm use v6.2.2 ```
 
 ``` $ npm install ```
 
