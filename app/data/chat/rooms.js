@@ -1,7 +1,7 @@
 import { reqPost } from '../api';
 
 export function getChatRooms(){
-  return reqPost('/rows/list', ['type:chatroom']);
+  return reqPost('/rows/list', {"plaintags": ['type:chatroom']});
 }
 
 export function createChatRoom(backend, roomname){
