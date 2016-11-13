@@ -1,3 +1,5 @@
+![](https://tryingtobeawesome.com/files/screenshot-cryptag-backchannel-chatapp.png)
+
 # Backchannel
 
 This is a user-friendly desktop chat and file-sharing app made with
