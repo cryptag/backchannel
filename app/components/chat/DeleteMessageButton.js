@@ -8,6 +8,12 @@ class DeleteMessageButton extends Component {
   }
 
   onMessageDelete(e){
+    let { message, username } = this.props;
+    if (message.from !== username){
+      // deleter is not original message author. ILLEGAL!
+      return;
+    }
+
     let deleteLink = $(e.target).parent('a');
     let messageKey = deleteLink.data('message-key');
 
