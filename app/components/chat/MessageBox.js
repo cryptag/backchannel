@@ -44,7 +44,7 @@ class MessageBox extends Component {
     newMessages.forEach( (message) => {
       newMessageIds.push(message.key);
       let content = message.msg.toLowerCase();
-      let username = this.props.myUsername.toLowerCase();
+      let username = this.props.username.toLowerCase();
       if (content.indexOf('@' + username) > -1){
         notifier.notify({
           'title': message.from,

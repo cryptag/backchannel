@@ -18,13 +18,13 @@ class ChatRoom extends Component {
 
 // class ChatRoom extends Component {
 //   render(){
-//     let myUsername = this.props.myUsername;
+//     let username = this.props.username;
 //     let room = this.props.room;
 //
 //     return (
 //      <div className="chatroom">
 //         {(room.messages || []).map(message => {
-//           let fromMe = (message.from === myUsername);
+//           let fromMe = (message.from === username);
 //           return (
 //             <div key={message.key} className={fromMe ? 'chat-outgoing' : 'chat-incoming'}>
 //               {message.from}: {message.msg}

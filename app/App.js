@@ -92,10 +92,15 @@ export default class App extends Component {
       });
   }
 
-  onMessageDelete(messageKey){
+  onMessageDelete(messageKey, onDeleteSuccess){
     // messageKey will look like: "id:d4f371df-1e0e-4a67-5c8b-bbae29917ddd"
     let { currentRoomKey } = this.state;
-    deleteMessage(currentRoomKey, messageKey);
+    deleteMessage(currentRoomKey, messageKey)
+      .then((response) => {
+        this.loadChatMessages(currentRoomKey);
+      }, (respErr) => {
+        console.log("Error deleting messsage: " + respErr);
+      });
   }
 
   render(){
@@ -104,13 +109,13 @@ export default class App extends Component {
         <Nav />
         <ChatRoomList
           rooms={this.state.chatRooms}
-          myUsername={this.state.username}
+          username={this.state.username}
           onSelectRoom={this.loadChatroom} />
 
         {/*TODO: only show ChatRoom if proper tab is selected*/}
         <ChatContainer
           messages={this.state.messages}
-          myUsername={this.state.username}
+          username={this.state.username}
           onSendMessage={this.onSendMessage}
           onMessageDelete={this.onMessageDelete}
           isLoadingMessages={this.state.isLoadingMessages} />
