@@ -6,22 +6,42 @@ class MessageForm extends Component {
     super(props);
 
     this.onSendMessage = this.onSendMessage.bind(this);
+    this.onMessageSuccess = this.onMessageSuccess.bind(this);
+    this.onMessageError = this.onMessageError.bind(this);
   }
 
   componentDidMount(){
     ReactDOM.findDOMNode(this.refs.messageBox).focus();
   }
 
+  disableMessageBox(){
+    let box = $(ReactDOM.findDOMNode(this.refs.messageBox));
+    box.prop('disabled', 'disabled');
+  }
+
+  enableMessageBox(){
+    let box = $(ReactDOM.findDOMNode(this.refs.messageBox));
+    box.removeAttr('disabled');
+  }
+
+  onMessageSuccess(){
+    this.enableMessageBox()
+    let box = $(ReactDOM.findDOMNode(this.refs.messageBox));
+    box.val('')
+  }
+
+  onMessageError(){
+    this.enableMessageBox();
+  }
+
   onSendMessage(e){
     e.preventDefault();
 
-    // this approach is only marginally less shitty than
-    // passing the value up the component tree on each keystroke.
     let messageBox = ReactDOM.findDOMNode(this.refs.messageBox);
     let message = messageBox.value;
     if (message && message.length > 0){
-      this.props.onSendMessage(message);
-      messageBox.value = '';
+      this.disableMessageBox();
+      this.props.onSendMessage(message, this.onMessageSuccess, this.onMessageError);
     }
   }
 
