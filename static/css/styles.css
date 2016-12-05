@@ -72,7 +72,14 @@ main {
     border-radius: 10px;
     padding: 5px 15px;
     margin-bottom: 5px;
-    width: 80%; }
+    width: 80%;
+    position: relative; }
+    .message-box ul li .delete-message {
+      position: absolute;
+      top: -10px;
+      right: -6px;
+      color: #333;
+      visibility: hidden; }
   .message-box ul li.chat-outgoing {
     float: right;
     color: white;
@@ -85,6 +92,8 @@ main {
     .message-box ul li.chat-incoming .username {
       display: block;
       font-style: italic; }
+  .message-box ul li:hover .delete-message {
+    visibility: visible; }
 
 .message-form {
   flex-direction: column;

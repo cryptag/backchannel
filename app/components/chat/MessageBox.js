@@ -70,14 +70,12 @@ class MessageBox extends Component {
   }
 
   render(){
-    let messages = this.props.messages;
-    let username = this.props.myUsername;
-    let isLoadingMessages = this.props.isLoadingMessages;
+    let { messages, username, isLoadingMessages, onMessageDelete } = this.props;
 
     return (
       <div className="row message-box" ref="messages">
         <div className="col-md-12">
-          <MessageList messages={messages} username={username} />
+          <MessageList messages={messages} username={username} onMessageDelete={onMessageDelete} />
         </div>
         {isLoadingMessages && <Throbber />}
       </div>

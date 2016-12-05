@@ -15,3 +15,8 @@ export function createMessage(roomKey, message, username){
   }
   return reqPost('/rows', row);
 }
+
+export function deleteMessage(roomKey, messageKey){
+  // TODO:
+  console.log(messageKey);
+}
