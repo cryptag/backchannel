@@ -15,3 +15,8 @@ export function createMessage(roomKey, message, username){
   }
   return reqPost('/rows', row);
 }
+
+export function deleteMessage(roomKey, messageKey){
+  let row = {'plaintags': [messageKey, 'parentrow:'+roomKey, 'type:chatmessage']};
+  return reqPost('/rows/delete', row);
+}

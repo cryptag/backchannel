@@ -6,13 +6,16 @@ import Message from './Message';
 class MessageList extends Component {
 
   render(){
-    let messages = this.props.messages;
-    let username = this.props.username;
+    let { messages, username, onMessageDelete } = this.props;
 
     return (
       <ul>
         {messages.map( (message) => {
-          return <Message key={message.key} message={message} username={username} />
+          return <Message
+                    key={message.key}
+                    message={message}
+                    username={username}
+                    onMessageDelete={onMessageDelete} />
         } )}
       </ul>
     );
