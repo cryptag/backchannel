@@ -78,7 +78,7 @@ export default class App extends Component {
     });
   }
 
-  onSendMessage(message){
+  onSendMessage(message, onMessageSuccess, onMessageError){
     this.setState({
       isLoadingMessages: true
     });
@@ -87,7 +87,9 @@ export default class App extends Component {
     createMessage(currentRoomKey, message, username)
       .then((response) => {
         this.loadChatMessages(currentRoomKey);
+        onMessageSuccess();
       }, (respErr) => {
+        onMessageError();
         console.log("Error creating message: " + respErr);
       });
   }
